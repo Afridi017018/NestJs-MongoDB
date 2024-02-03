@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BookModule } from './book/book.module';
-import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -11,16 +11,19 @@ import { UserModule } from './user/user.module';
     envFilePath: [".local.env"]
   }),
 
-  MongooseModule.forRootAsync({
-    imports: [ConfigModule],
-    useFactory: (configService: ConfigService) => ({uri: configService.get("MONGO_URI")}),
+  // MongooseModule.forRootAsync({
+  //   imports: [ConfigModule],
+  //   useFactory: (configService: ConfigService) => ({uri: configService.get("MONGO_URI")}),
 
-    inject: [ConfigService]
-  }),
+  //   inject: [ConfigService]
+  // }),
+  
+
+  MongooseModule.forRoot(process.env.MONGO_URI),
 
   BookModule,
 
-  UserModule
+  AuthModule
   ],
   controllers: [],
   providers: [],
